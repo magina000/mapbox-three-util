@@ -1,13 +1,13 @@
 {
   "name": "mapbox-three-util",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "build": "rollup -c",
     "test": "cd ./examples/vue-test && npm run dev",
     "docs:dev": "vuepress dev docs",
     "commit": "git add . && git-cz",
-    "release": "./scripts/release.sh",
+    "release": "standard-version",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "keywords": [],
