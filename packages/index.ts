@@ -1,3 +1,5 @@
 import { HikMapbox } from './mapbox'
+import { ActualModel } from './class/ActualModel'
+import { StaticModel } from './class/StaticModel'
 
-export { HikMapbox }
+export { HikMapbox, ActualModel, StaticModel }

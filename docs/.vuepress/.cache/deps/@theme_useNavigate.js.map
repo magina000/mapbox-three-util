@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../node_modules/@vuepress/theme-default/lib/client/composables/useNavigate.js"],
+  "sourcesContent": ["import { isLinkAbsolute, isLinkWithProtocol } from '@vuepress/helper/client';\nimport { useRoute, useRouter } from 'vuepress/client';\nexport const useNavigate = () => {\n    const router = useRouter();\n    const route = useRoute();\n    return (url) => {\n        if (url)\n            if (isLinkAbsolute(url)) {\n                // Inner absolute path\n                if (route.path !== url)\n                    router.push(url);\n            }\n            else if (isLinkWithProtocol(url)) {\n                // external url\n                window?.open(url);\n            }\n            else {\n                // relative url\n                router.push(encodeURI(url));\n            }\n    };\n};\n"],
+  "mappings": ";;;;;;;AACA,SAAS,UAAU,iBAAiB;AAC7B,IAAM,cAAc,MAAM;AAC7B,QAAM,SAAS,UAAU;AACzB,QAAM,QAAQ,SAAS;AACvB,SAAO,CAAC,QAAQ;AACZ,QAAI;AACA,UAAI,eAAe,GAAG,GAAG;AAErB,YAAI,MAAM,SAAS;AACf,iBAAO,KAAK,GAAG;AAAA,MACvB,WACS,mBAAmB,GAAG,GAAG;AAE9B,yCAAQ,KAAK;AAAA,MACjB,OACK;AAED,eAAO,KAAK,UAAU,GAAG,CAAC;AAAA,MAC9B;AAAA,EACR;AACJ;",
+  "names": []
+}

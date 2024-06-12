@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../node_modules/@vuepress/theme-default/lib/client/composables/useContributors.js"],
+  "sourcesContent": ["import { useThemeLocaleData } from '@theme/useThemeData';\nimport { computed } from 'vue';\nimport { usePageData, usePageFrontmatter } from 'vuepress/client';\nexport const useContributors = () => {\n    const themeLocale = useThemeLocaleData();\n    const page = usePageData();\n    const frontmatter = usePageFrontmatter();\n    return computed(() => {\n        const showContributors = frontmatter.value.contributors ?? themeLocale.value.contributors ?? true;\n        if (!showContributors)\n            return null;\n        return page.value.git?.contributors ?? null;\n    });\n};\n"],
+  "mappings": ";;;;;;;;AAEA,SAAS,aAAa,0BAA0B;AACzC,IAAM,kBAAkB,MAAM;AACjC,QAAM,cAAc,mBAAmB;AACvC,QAAM,OAAO,YAAY;AACzB,QAAM,cAAc,mBAAmB;AACvC,SAAO,SAAS,MAAM;AAP1B;AAQQ,UAAM,mBAAmB,YAAY,MAAM,gBAAgB,YAAY,MAAM,gBAAgB;AAC7F,QAAI,CAAC;AACD,aAAO;AACX,aAAO,UAAK,MAAM,QAAX,mBAAgB,iBAAgB;AAAA,EAC3C,CAAC;AACL;",
+  "names": []
+}

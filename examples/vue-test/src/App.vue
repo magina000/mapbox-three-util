@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { HikMapbox } from '../../../packages/index'
 import { useMqttStore } from '@/stores/mqtt'
 import Watcher from '@/class/watcher'
@@ -24,6 +24,11 @@ const add = async () => {
     lnglat: [120.90133841501851, 31.974180365993664],
     scale: 5,
     rotation: 225,
+    label: {
+      element: createLabel('浙A21234', 'plateNo'),
+      offset: [0, 0],
+      height: 3,
+    },
   })
   console.log('model', model)
   // const model = hikMapbox.getModel('123')
@@ -40,6 +45,7 @@ const stop = () => {
     serve: MQTT_SERVE,
     topic: topicURL,
   })
+  if (timer) clearInterval(timer)
 }
 
 const update = () => {
@@ -63,6 +69,7 @@ const start = () => {
     topic: topicURL,
     callback: callback,
   })
+  removePlates()
 }
 
 const follow = () => {
@@ -100,6 +107,27 @@ const MEC_TYPES = [0, 1, 3, 2, 4, 5, 7, 11]
 //     })
 //   } catch (error) {}
 // }
+let plates = ref<Map<string, any>>(new Map())
+
+const setPlates = (data: any) => {
+  // plateCollects.value.set(data.id, data)
+  if (hikMapbox.actualTargetMap.get(data.id)) {
+    plates.value.set(data.id, data)
+  }
+}
+
+let timer: any
+const removePlates = () => {
+  if (timer) clearInterval(timer)
+  timer = setInterval(() => {
+    plates.value.forEach((v, k) => {
+      if (!hikMapbox.actualTargetMap.get(k)) {
+        // console.log(k, hikMapbox.actualTargetMap)
+        plates.value.delete(k)
+      }
+    })
+  }, 1000)
+}
 
 const callback = async (data: any) => {
   try {
@@ -113,6 +141,15 @@ const callback = async (data: any) => {
           rotation: v.heading,
           scale: 1,
           delTime: 1000, //ms
+          label: {
+            element: createLabel(v.id, 'plateNo'),
+            offset: [0,0],
+            height: 5,
+          },
+          renderingback: (data: any) => {
+            // console.log('renderback', data)
+            // setPlates(data)
+          },
           // color: Math.random() < 0.5 ? '#FF1493' : '#7B68EE',
         }
         hikMapbox.actualTargetRender(_v)
@@ -125,62 +162,19 @@ const destroy = () => {
   hikMapbox.destroy()
 }
 
-const initThreeJS = () => {
-  // 获取容器
-  const container = document.getElementById('mapContainer')
-  if (!container) return
-
-  // 创建场景
-  const scene = new THREE.Scene()
-
-  // 创建相机
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    container.clientWidth / container.clientHeight,
-    0.1,
-    1000
-  )
-
-  // 创建渲染器
-  const renderer = new THREE.WebGLRenderer()
-  renderer.setSize(container.clientWidth, container.clientHeight)
-  container.appendChild(renderer.domElement)
-
-  // 创建一个立方体
-  const geometry = new THREE.BoxGeometry()
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-  const cube = new THREE.Mesh(geometry, material)
-  scene.add(cube)
-
-
-  // 设置相机位置
-  camera.position.z = 5
-
-  const axesHelper = new THREE.AxesHelper(10000)
-
-  scene.add(axesHelper)
-
-  // 动画函数
-  const animate = () => {
-    requestAnimationFrame(animate)
-
-    // 旋转立方体
-    cube.rotation.x += 0.01
-    cube.rotation.y += 0.01
-
-    // 渲染场景
-    renderer.render(scene, camera)
-  }
-
-  // 开始动画
-  animate()
+const createLabel = (text: string, clsName: string) => {
+  let popup = document.createElement('div')
+  popup.className = clsName
+  popup.innerHTML = text
+  return popup
 }
 
 onMounted(() => {
   hikMapbox = new HikMapbox({
-    container: 'mapContainer',
+    container: 'map',
     // center: [116.48929027500393, 39.729121481528],
     center: [120.90133841501851, 31.974180365993664],
+    // center: [120.6, 31.41],
     zoom: 17,
   })
   hikMapbox.on('load', async () => {
@@ -189,6 +183,12 @@ onMounted(() => {
     //   topic: topicURL,
     //   callback: callback,
     // })
+    // add()
+  })
+  hikMapbox.on('zoom', (zoom: number) => {
+    if (model) {
+      model.label.visible = zoom > 16
+    }
   })
   //目标物拾取
   hikMapbox.on('click', (e: any) => {
@@ -198,8 +198,8 @@ onMounted(() => {
     if (modelId)
       hikMapbox.follow({
         id: modelId,
-        zoom: 20,
-        pitch: 0,
+        zoom: 19,
+        pitch: 45,
       })
   })
 })
@@ -216,10 +216,15 @@ onMounted(() => {
     <button @click="stop" class="btn">停止</button>
     <button @click="destroy" class="btn">销毁</button>
   </div>
-  <div id="mapContainer"></div>
+  <div class="map-container">
+    <div id="map"></div>
+    <template v-for="(v, k) in plates" :key="v[0]">
+      <div class="plate" :style="{ left: v[1].x + 'px', top: v[1].y + 'px' }">{{ v[0] }}</div>
+    </template>
+  </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 * {
   padding: 0;
   margin: 0;
@@ -231,8 +236,29 @@ onMounted(() => {
   width: 100px;
   height: 30px;
 }
-#mapContainer {
-  width: 900px;
-  height: 900px;
+.map-container {
+  width: 800px;
+  height: 800px;
+  position: relative;
+}
+#map {
+  width: 100%;
+  height: 100%;
+  :deep(.plateNo) {
+    padding: 0 3px;
+    width: 100%;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    color: black;
+    background: linear-gradient(to bottom, rgb(198, 244, 222), rgb(46, 211, 74));
+  }
+}
+.plate {
+  position: absolute;
+  transform: translate(-50%, -30px);
 }
 </style>

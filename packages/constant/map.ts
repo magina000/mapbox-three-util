@@ -16,6 +16,7 @@ export const MODEL = {
   scale: 1,
   rotation: 0,
   delTime: 1000,
+  label: { offset: [0, 0], height: 0.5, visible: true },
 }
 
 export const FOLLOW = {

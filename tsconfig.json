@@ -2,8 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "lib",
-    "rootDir": "./packages"
+    "rootDir": "../mapbox-three-util"
   },
-  "include": ["packages/**/*.ts", "packages/**/*.tsx"],
+  "include": ["packages/**/*.ts", "packages/**/*.tsx", "**/.vuepress/**/*"],
   "exclude": ["packages/**/__test__/*.test.ts"]
 }

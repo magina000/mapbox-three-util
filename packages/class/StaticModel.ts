@@ -11,6 +11,7 @@ export class StaticModel {
   public model: any
   public id: string
   public layerId: string
+  public label: any
 
   constructor(option: Option) {
     this.option = option
@@ -28,6 +29,7 @@ export class StaticModel {
   public async create() {
     return new Promise<StaticModel>((resolve, reject) => {
       const { url, lnglat, rotation, type, units, anchor, clone, scale } = Object.assign(
+        {},
         MODEL,
         this.option
       )
@@ -40,6 +42,10 @@ export class StaticModel {
         obj: url,
         rotation: { x: 90, y: 0, z: 0 },
       }
+      let labelOption: any
+      if (this.option.label) {
+        labelOption = Object.assign({}, MODEL.label, this.option.label)
+      }
       this.option.map.addLayer({
         id: this.layerId,
         type: 'custom',
@@ -49,6 +55,15 @@ export class StaticModel {
             model.userData.id = this.id
             model.setCoords(lnglat)
             model.setRotation({ x: 0, y: 0, z: -rotation })
+            if (labelOption) {
+              const { element, height, offset, visible } = labelOption
+              this.label = model.drawLabelHTML(
+                element,
+                visible,
+                { x: offset[0], y: offset[1] },
+                height
+              )
+            }
             this.option.tb.add(model)
             this.model = model
             resolve(model)

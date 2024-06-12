@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../node_modules/@vuepress/theme-default/lib/client/composables/useLastUpdated.js"],
+  "sourcesContent": ["import { useThemeLocaleData } from '@theme/useThemeData';\nimport { computed } from 'vue';\nimport { usePageData, usePageFrontmatter } from 'vuepress/client';\nexport const useLastUpdated = () => {\n    const themeLocale = useThemeLocaleData();\n    const page = usePageData();\n    const frontmatter = usePageFrontmatter();\n    return computed(() => {\n        const showLastUpdated = frontmatter.value.lastUpdated ?? themeLocale.value.lastUpdated ?? true;\n        if (!showLastUpdated)\n            return null;\n        if (!page.value.git?.updatedTime)\n            return null;\n        const updatedDate = new Date(page.value.git?.updatedTime);\n        return updatedDate.toLocaleString();\n    });\n};\n"],
+  "mappings": ";;;;;;;;AAEA,SAAS,aAAa,0BAA0B;AACzC,IAAM,iBAAiB,MAAM;AAChC,QAAM,cAAc,mBAAmB;AACvC,QAAM,OAAO,YAAY;AACzB,QAAM,cAAc,mBAAmB;AACvC,SAAO,SAAS,MAAM;AAP1B;AAQQ,UAAM,kBAAkB,YAAY,MAAM,eAAe,YAAY,MAAM,eAAe;AAC1F,QAAI,CAAC;AACD,aAAO;AACX,QAAI,GAAC,UAAK,MAAM,QAAX,mBAAgB;AACjB,aAAO;AACX,UAAM,cAAc,IAAI,MAAK,UAAK,MAAM,QAAX,mBAAgB,WAAW;AACxD,WAAO,YAAY,eAAe;AAAA,EACtC,CAAC;AACL;",
+  "names": []
+}

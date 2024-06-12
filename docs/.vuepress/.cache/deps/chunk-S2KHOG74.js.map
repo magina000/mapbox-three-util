@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../node_modules/@vuepress/theme-default/lib/client/composables/useThemeData.js"],
+  "sourcesContent": ["import { useThemeData as _useThemeData, useThemeLocaleData as _useThemeLocaleData, } from '@vuepress/plugin-theme-data/client';\nexport const useThemeData = () => _useThemeData();\nexport const useThemeLocaleData = () => _useThemeLocaleData();\n"],
+  "mappings": ";AAAA,SAAS,gBAAgB,eAAe,sBAAsB,2BAA4B;AACnF,IAAM,eAAe,MAAM,cAAc;AACzC,IAAM,qBAAqB,MAAM,oBAAoB;",
+  "names": []
+}

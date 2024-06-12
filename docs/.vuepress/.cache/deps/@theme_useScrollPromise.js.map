@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../node_modules/@vuepress/theme-default/lib/client/composables/useScrollPromise.js"],
+  "sourcesContent": ["let promise = null;\nlet promiseResolve = null;\nconst scrollPromise = {\n    wait: () => promise,\n    pending: () => {\n        promise = new Promise((resolve) => (promiseResolve = resolve));\n    },\n    resolve: () => {\n        promiseResolve?.();\n        promise = null;\n        promiseResolve = null;\n    },\n};\nexport const useScrollPromise = () => scrollPromise;\n"],
+  "mappings": ";AAAA,IAAI,UAAU;AACd,IAAI,iBAAiB;AACrB,IAAM,gBAAgB;AAAA,EAClB,MAAM,MAAM;AAAA,EACZ,SAAS,MAAM;AACX,cAAU,IAAI,QAAQ,CAAC,YAAa,iBAAiB,OAAQ;AAAA,EACjE;AAAA,EACA,SAAS,MAAM;AACX;AACA,cAAU;AACV,qBAAiB;AAAA,EACrB;AACJ;AACO,IAAM,mBAAmB,MAAM;",
+  "names": []
+}
