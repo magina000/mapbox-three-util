@@ -7,7 +7,7 @@
     "test": "cd ./examples/vue-test && npm run dev",
     "docs:dev": "vuepress dev docs",
     "commit": "git add . && git-cz",
-    "release": "rollup -c && release-it"
+    "release": "npm run build && npm run commit && release-it"
   },
   "keywords": [],
   "author": {
