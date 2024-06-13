@@ -7,7 +7,7 @@
     "test": "cd ./examples/vue-test && npm run dev",
     "docs:dev": "vuepress dev docs",
     "commit": "git add . && git-cz",
-    "release": "release-it"
+    "release": "rollup -c && release-it"
   },
   "keywords": [],
   "author": {
@@ -25,7 +25,8 @@
   "jsnext:main": "lib/index.esm.js",
   "browser": "lib/index.umd.js",
   "files": [
-    "lib"
+    "lib",
+    "docs"
   ],
   "types": "lib/index.d.ts",
   "devDependencies": {
