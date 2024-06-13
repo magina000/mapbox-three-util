@@ -1,5 +1,13 @@
 
 
+## [1.0.3](https://github.com/magina000/mapbox-three-util/compare/v1.0.2...v1.0.3) (2024-06-13)
+
+
+### Bug Fixes
+
+* 测试打包发布流程 ([a82b5b5](https://github.com/magina000/mapbox-three-util/commit/a82b5b59e263bbdc969d782a2dfd058b6ea24ce0))
+* 测试发布脚本 ([2ac1e56](https://github.com/magina000/mapbox-three-util/commit/2ac1e569be2725fb953cd61c136f5377c5e1c61f))
+
 ## [1.0.2](https://github.com/magina000/mapbox-three-util/compare/v1.0.1...v1.0.2) (2024-06-13)
 
 
